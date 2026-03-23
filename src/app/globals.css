@@ -678,3 +678,213 @@ img {
   .article__title { font-size: var(--text-2xl); }
   .card-grid { grid-template-columns: 1fr; }
 }
+
+/* ===== Visual Enhancement Classes ===== */
+
+/* Info / Tip / Warning boxes */
+.info-box, .tip-box, .warning-box, .point-box {
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  margin: var(--space-lg) 0;
+  line-height: 1.8;
+  position: relative;
+  overflow: hidden;
+}
+
+.info-box::before, .tip-box::before, .warning-box::before, .point-box::before {
+  position: absolute;
+  top: var(--space-md);
+  left: var(--space-md);
+  font-size: 1.4rem;
+}
+
+.info-box {
+  background: linear-gradient(135deg, #e8f4fd 0%, #f0f8ff 100%);
+  border-left: 4px solid var(--color-accent);
+}
+.info-box::before { content: '💡'; }
+
+.tip-box {
+  background: linear-gradient(135deg, #f0fbe8 0%, #f8fff0 100%);
+  border-left: 4px solid var(--color-secondary);
+}
+.tip-box::before { content: '✅'; }
+
+.warning-box {
+  background: linear-gradient(135deg, #fff5e8 0%, #fffaf0 100%);
+  border-left: 4px solid var(--color-attention);
+}
+.warning-box::before { content: '⚠️'; }
+
+.point-box {
+  background: linear-gradient(135deg, #f0e8ff 0%, #f8f0ff 100%);
+  border-left: 4px solid #7c3aed;
+}
+.point-box::before { content: '📌'; }
+
+.info-box > *, .tip-box > *, .warning-box > *, .point-box > * {
+  padding-left: var(--space-2xl);
+}
+
+/* Box title (strong inside box) */
+.info-box strong:first-child, .tip-box strong:first-child,
+.warning-box strong:first-child, .point-box strong:first-child {
+  display: block;
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-xs);
+}
+
+/* Step cards */
+.step-card {
+  display: flex;
+  gap: var(--space-lg);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin: var(--space-md) 0;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.step-card:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-md);
+}
+
+.step-card__num {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: var(--color-secondary);
+  font-size: var(--text-xl);
+  font-weight: 900;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.step-card__content h4 {
+  font-size: var(--text-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.step-card__content p {
+  color: var(--color-text-light);
+  margin: 0;
+  line-height: 1.7;
+}
+
+/* Key point / highlight box */
+.key-point {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: white;
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  margin: var(--space-xl) 0;
+  text-align: center;
+}
+
+.key-point__label {
+  display: inline-block;
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  padding: 2px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-sm);
+}
+
+.key-point__text {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Stat cards */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-md);
+  margin: var(--space-lg) 0;
+}
+
+.stat-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  text-align: center;
+}
+
+.stat-card__icon {
+  font-size: 2rem;
+  margin-bottom: var(--space-xs);
+}
+
+.stat-card__value {
+  font-size: var(--text-2xl);
+  font-weight: 900;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.stat-card__label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-xs);
+}
+
+/* Badge pills */
+.badge {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  margin-right: var(--space-xs);
+}
+
+.badge--primary { background: var(--color-primary); color: white; }
+.badge--secondary { background: var(--color-secondary); color: var(--color-primary); }
+.badge--accent { background: var(--color-accent); color: white; }
+.badge--attention { background: var(--color-attention); color: white; }
+
+/* Pro tip */
+.pro-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  background: linear-gradient(135deg, #f8fff0 0%, #f0fbe8 100%);
+  border: 1px solid rgba(156, 209, 0, 0.3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin: var(--space-lg) 0;
+}
+
+.pro-tip__icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.pro-tip__content {
+  flex: 1;
+}
+
+.pro-tip__content strong {
+  color: var(--color-primary);
+  display: block;
+  margin-bottom: var(--space-xs);
+}
+
+/* Responsive for step/stat cards */
+@media (max-width: 768px) {
+  .step-card { flex-direction: column; align-items: flex-start; }
+  .stat-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
