@@ -29,19 +29,19 @@ export default function Footer() {
         <div className="footer__section">
           <h4>人気記事</h4>
           <ul>
-            <li><Link href="/articles/game-poikatsu-guide">ゲームポイ活完全ガイド</Link></li>
-            <li><Link href="/articles/poikatsu-beginner">ポイ活の始め方</Link></li>
-            <li><Link href="/articles/app-ranking">アプリランキング</Link></li>
+            <li><Link href="/articles/poikatsu-kasegiyasui-omoshiroi-ranking">稼ぎやすい×面白いランキング</Link></li>
+            <li><Link href="/articles/poikatsu-tsukareta-stress-kaishou">ポイ活の疲れ解消法</Link></li>
+            <li><Link href="/articles/poikatsu-game-dl-vs-jousetsu-chart">DL型vs常設型 比較表</Link></li>
           </ul>
         </div>
 
         <div className="footer__section">
           <h4>サイトについて</h4>
           <ul>
-            <li><Link href="/about">ポイ活ラボとは</Link></li>
-            <li><Link href="/privacy">プライバシーポリシー</Link></li>
-            <li><Link href="/terms">利用規約</Link></li>
-            <li><Link href="/contact">お問い合わせ</Link></li>
+            <li><Link href="/">ポイ活ラボとは</Link></li>
+            <li><Link href="/">プライバシーポリシー</Link></li>
+            <li><Link href="/">利用規約</Link></li>
+            <li><Link href="/">お問い合わせ</Link></li>
           </ul>
         </div>
       </div>

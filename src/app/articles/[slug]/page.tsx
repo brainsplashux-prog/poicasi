@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import { getArticleBySlug, getAllArticleSlugs, getRelatedArticles } from '@/lib/microcms';
 import { generateSiteMetadata, generateArticleJsonLd, generateBreadcrumbJsonLd } from '@/lib/seo';
 import ArticleCard from '@/components/ArticleCard';
+import ReadingProgress from '@/components/ReadingProgress';
 import type { Metadata } from 'next';
 
 export const revalidate = 60;
@@ -41,6 +42,40 @@ export async function generateMetadata({
   }
 }
 
+// HTMLからH2見出しを抽出してTOCを生成
+function extractHeadings(html: string): { id: string; text: string }[] {
+  const regex = /<h2[^>]*>(.*?)<\/h2>/gi;
+  const headings: { id: string; text: string }[] = [];
+  let match;
+  let index = 0;
+  while ((match = regex.exec(html)) !== null) {
+    const text = match[1].replace(/<[^>]*>/g, '').trim();
+    headings.push({
+      id: `section-${index}`,
+      text,
+    });
+    index++;
+  }
+  return headings;
+}
+
+// HTMLのH2にidを付与
+function addIdsToHeadings(html: string): string {
+  let index = 0;
+  return html.replace(/<h2([^>]*)>/gi, () => {
+    const id = `section-${index}`;
+    index++;
+    return `<h2 id="${id}">`;
+  });
+}
+
+// 読了時間の計算（日本語: 約500文字/分）
+function calculateReadingTime(html: string): number {
+  const text = html.replace(/<[^>]*>/g, '');
+  const charCount = text.length;
+  return Math.max(1, Math.ceil(charCount / 500));
+}
+
 export default async function ArticlePage({
   params,
 }: {
@@ -57,7 +92,7 @@ export default async function ArticlePage({
 
   const relatedArticles = await getRelatedArticles(article, 3).catch(() => []);
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://poicasi.co.jp';
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://media.poicasi.co.jp';
 
   const articleJsonLd = generateArticleJsonLd(article);
   const breadcrumbJsonLd = generateBreadcrumbJsonLd([
@@ -73,8 +108,16 @@ export default async function ArticlePage({
     year: 'numeric', month: 'long', day: 'numeric',
   });
 
+  // TOC & Reading Time
+  const headings = extractHeadings(article.content);
+  const contentWithIds = addIdsToHeadings(article.content);
+  const readingTime = calculateReadingTime(article.content);
+
   return (
     <>
+      {/* Reading Progress Bar */}
+      <ReadingProgress />
+
       {/* JSON-LD */}
       <script
         type="application/ld+json"
@@ -105,6 +148,7 @@ export default async function ArticlePage({
               <time dateTime={article.updatedAt}>🔄 更新: {updateDate}</time>
             )}
             {article.author && <span>✍️ {article.author.name}</span>}
+            <span className="article__reading-time">⏱️ 約{readingTime}分で読めます</span>
           </div>
         </header>
 
@@ -123,10 +167,24 @@ export default async function ArticlePage({
           />
         )}
 
+        {/* Table of Contents */}
+        {headings.length > 2 && (
+          <nav className="toc">
+            <div className="toc__title">目次</div>
+            <ul className="toc__list">
+              {headings.map((heading) => (
+                <li key={heading.id}>
+                  <a href={`#${heading.id}`}>{heading.text}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+
         {/* Body */}
         <div
           className="article__body"
-          dangerouslySetInnerHTML={{ __html: article.content }}
+          dangerouslySetInnerHTML={{ __html: contentWithIds }}
         />
 
         {/* CTA */}
