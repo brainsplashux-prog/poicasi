@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 const NAV_ITEMS = [
   { label: 'ホーム', href: '/' },
+  { label: '🎮 ゲーム攻略', href: '/category/game-guide' },
   { label: 'ゲーム×ポイ活', href: '/category/game-poikatsu' },
   { label: 'ポイ活入門', href: '/category/beginner' },
   { label: 'ランキング', href: '/category/ranking' },

@@ -38,10 +38,10 @@ export default function Footer() {
         <div className="footer__section">
           <h4>サイトについて</h4>
           <ul>
-            <li><Link href="/">ポイ活ラボとは</Link></li>
-            <li><Link href="/">プライバシーポリシー</Link></li>
-            <li><Link href="/">利用規約</Link></li>
-            <li><Link href="/">お問い合わせ</Link></li>
+            <li><Link href="/about">ポイ活ラボとは</Link></li>
+            <li><Link href="/privacy">プライバシーポリシー</Link></li>
+            <li><Link href="/contact">お問い合わせ</Link></li>
+            <li><Link href="/poicasi">ポイカジについて</Link></li>
           </ul>
         </div>
       </div>

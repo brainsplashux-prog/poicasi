@@ -7,8 +7,31 @@ export const client = createClient({
 });
 
 // --- Types ---
-export type ArticleCategory = 'ゲーム×ポイ活' | 'ポイ活入門' | 'ポイ活比較' | 'ポイント交換' | '安全性';
-export type ArticleType = 'pillar' | 'comparison' | 'howto' | 'review' | 'news';
+export type ArticleCategory =
+  | 'ゲーム攻略'        // ← 新設: 時給効率特化ゲーム攻略
+  | 'ゲーム×ポイ活'
+  | 'ポイ活入門'
+  | 'ポイ活比較'
+  | 'ポイント交換'
+  | '安全性';
+
+export type ArticleType = 'pillar' | 'comparison' | 'howto' | 'review' | 'news' | 'game-guide';
+
+// ゲーム攻略記事専用フィールド
+export interface GameGuideData {
+  /** 難易度 1（超簡単）〜 5（難しい） */
+  gameDifficulty?: number;
+  /** 達成日数の目安（例: "3〜5日"） */
+  gameDaysToComplete?: string;
+  /** 総プレイ時間の目安（例: "約4時間"） */
+  gameTotalHours?: string;
+  /** 最高報酬額（円）— ポイントサイト横断の最大値 */
+  gameMaxReward?: number;
+  /** 時給効率（円/時）= gameMaxReward ÷ totalHoursNum */
+  gameHourlyRate?: number;
+  /** 対応ポイントサイト（カンマ区切り、例: "Moppy,ポイントインカム,げん玉"） */
+  gamePointSites?: string;
+}
 
 export interface Article {
   id: string;
@@ -44,6 +67,9 @@ export interface ArticleListResponse {
 
 // --- API Functions ---
 
+/** ゲーム攻略記事のslugパターン */
+const GAME_GUIDE_SLUG_SUFFIX = 'poikatsu-guide';
+
 /** 記事一覧取得 */
 export async function getArticles(params?: {
   limit?: number;
@@ -53,7 +79,24 @@ export async function getArticles(params?: {
 }) {
   const { limit = 10, offset = 0, category, orders = '-publishedAt' } = params || {};
 
-  const filters = category ? `category[equals]${category}` : undefined;
+  // ゲーム攻略カテゴリ: slugパターンで全記事からフィルタリング
+  if (category === 'ゲーム攻略') {
+    const all = await client.getList<Article>({
+      endpoint: 'articles',
+      queries: { limit: 100, offset: 0, orders },
+    });
+    const gameArticles = all.contents.filter(
+      (a) => a.slug && a.slug.includes(GAME_GUIDE_SLUG_SUFFIX)
+    );
+    return {
+      contents: gameArticles.slice(offset, offset + limit),
+      totalCount: gameArticles.length,
+      offset,
+      limit,
+    };
+  }
+
+  const filters = category ? `category[contains]${category}` : undefined;
 
   return await client.getList<Article>({
     endpoint: 'articles',

@@ -132,7 +132,7 @@ export default async function ArticlePage({
       <nav className="breadcrumb" aria-label="パンくずリスト">
         <a href="/">ホーム</a>
         <span className="breadcrumb__sep" />
-        <a href={`/category/${article.category}`}>{article.category}</a>
+        <a href={`/category/${article.category === 'ゲーム攻略' ? 'game-guide' : article.category === 'ゲーム×ポイ活' ? 'game-poikatsu' : article.category === 'ポイ活入門' ? 'beginner' : article.category === 'ポイ活比較' ? 'ranking' : article.category === 'ポイント交換' ? 'exchange' : 'safety'}`}>{article.category}</a>
         <span className="breadcrumb__sep" />
         <span>{article.title}</span>
       </nav>
@@ -193,8 +193,8 @@ export default async function ArticlePage({
           <p className="cta-box__desc">
             作業感ゼロの新しいポイ活を始めませんか？
           </p>
-          <a href="https://poicasi.co.jp" className="cta-box__btn" target="_blank" rel="noopener">
-            ポイカジを始める →
+          <a href="/poicasi" className="cta-box__btn">
+            ポイカジの詳細を見る →
           </a>
         </div>
       </article>
